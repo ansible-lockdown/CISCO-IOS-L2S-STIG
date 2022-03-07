@@ -1,0 +1,29 @@
+[cisco]
+#Define Host By Ip Address
+#192.168.68.230
+#192.168.68.233
+mrsteve.tplinkdns.com
+
+
+#Define Host By Naming Convention
+#Switch1 ansible_host=192.168.68.230
+#Switch2 ansible_host=192.168.68.233
+#Switch3 ansible_host=192.168.68.233
+
+#Router1 ansible_host=192.168.68.233
+#Router2 ansible_host=192.168.68.233
+#Router3 ansible_host=192.168.68.233
+
+#Define Host By Hostname
+#test.dyndns.com
+
+[cisco:vars] 
+ansible_network_os=cisco.ios.ios 
+ansible_ssh_user=mpg
+ansible_ssh_password=password
+ansible_port=2224
+ansible_become=yes
+ansible_become_method=enable
+ansible_become_pass=password
+ansible_connection=ansible.netcommon.network_cli
+command_timeout=120

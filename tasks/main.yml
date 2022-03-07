@@ -1,0 +1,21 @@
+---
+- name: Include CAT 1 patches
+  import_tasks: fix-cat1.yml
+  when: iosl2sstig_cat1_patch
+  tags:
+      - CAT1
+      - high
+
+- name: Include CAT 2 patches
+  import_tasks: fix-cat2.yml
+  when: iosl2sstig_cat2_patch
+  tags:
+      - CAT2
+      - medium
+
+- name: Include CAT 3 patches
+  import_tasks: fix-cat3.yml
+  when: iosl2sstig_cat3_patch
+  tags:
+      - CAT3
+      - low
