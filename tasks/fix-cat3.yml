@@ -30,7 +30,7 @@
       - SV-220636r648763_rule
       - V-220636
 
-- name: "LOW | CISC-L2-000170 | AUDIT | The Cisco switch must have IGMP or MLD Snooping configured on all VLANs."
+- name: "LOW | CISC-L2-000170 | PATCH | The Cisco switch must have IGMP or MLD Snooping configured on all VLANs."
   block:
       - name: "LOW | CISC-L2-000170 | AUDIT | The Cisco switch must have IGMP or MLD Snooping configured on all VLANs. | Get Snooping Status Global"
         ios_command:

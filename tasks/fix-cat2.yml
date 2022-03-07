@@ -59,7 +59,7 @@
       - SV-220625r539671_rule
       - V-220625
 
-- name: "MEDIUM | CISC-L2-000060 | AUDIT | The Cisco switch must be configured for authorized users to select a user session to capture."
+- name: "MEDIUM | CISC-L2-000060 | PATCH | The Cisco switch must be configured for authorized users to select a user session to capture."
   block:
       - name: "MEDIUM | CISC-L2-000060 | PATCH | The Cisco switch must be configured for authorized users to select a user session to capture. | Set Source Interfaces"
         ios_config:
@@ -86,7 +86,7 @@
       - SV-220626r539671_rule
       - V-220626
 
-- name: "MEDIUM | CISC-L2-000070 | AUDIT | The Cisco switch must be configured for authorized users to remotely view, in real time, all content related to an established user session from a component separate from the Cisco switch."
+- name: "MEDIUM | CISC-L2-000070 | PATCH | The Cisco switch must be configured for authorized users to remotely view, in real time, all content related to an established user session from a component separate from the Cisco switch."
   block:
       - name: "MEDIUM | CISC-L2-000070 | PATCH | The Cisco switch must be configured for authorized users to remotely view, in real time, all content related to an established user session from a component separate from the Cisco switch. | Set Source Interfaces"
         ios_config:
@@ -143,7 +143,7 @@
       - SV-220628r539671_rule
       - V-220628
 
-- name: "MEDIUM | CISC-L2-000100 | AUDIT |  The Cisco switch must have Bridge Protocol Data Unit (BPDU) Guard enabled on all user-facing or untrusted access switch ports."
+- name: "MEDIUM | CISC-L2-000100 | PATCH |  The Cisco switch must have Bridge Protocol Data Unit (BPDU) Guard enabled on all user-facing or untrusted access switch ports."
   block:
       - name: "MEDIUM | CISC-L2-000100 | PATCH |  The Cisco switch must have Bridge Protocol Data Unit (BPDU) Guard enabled on all user-facing or untrusted access switch ports. | Global BPDU Guard."
         ios_config:
@@ -243,7 +243,7 @@
       - SV-220635r539671_rule
       - V-220635
 
-- name: "MEDIUM | CISC-L2-000180 | AUDIT | The Cisco switch must implement Rapid Spanning Tree Protocol (STP) where VLANs span multiple switches with redundant links."
+- name: "MEDIUM | CISC-L2-000180 | PATCH | The Cisco switch must implement Rapid Spanning Tree Protocol (STP) where VLANs span multiple switches with redundant links."
   block:
       - name: "MEDIUM | CISC-L2-000180 | PATCH | The Cisco switch must implement Rapid Spanning Tree Protocol (STP) where VLANs span multiple switches with redundant links. | Set Spanning Tree Mode."
         ios_config:
@@ -276,7 +276,7 @@
       - SV-220638r539671_rule
       - V-220638
 
-- name: "MEDIUM | CISC-L2-000190 | AUDIT | The Cisco switch must enable Unidirectional Link Detection (UDLD) to protect against one-way connections."
+- name: "MEDIUM | CISC-L2-000190 | PATCH | The Cisco switch must enable Unidirectional Link Detection (UDLD) to protect against one-way connections."
   block:
       - name: "MEDIUM | CISC-L2-000190 | PATCH | The Cisco switch must enable Unidirectional Link Detection (UDLD) to protect against one-way connections. | Global UDLD Enable"
         ios_config:
@@ -317,7 +317,7 @@
       - SV-220640r539671_rule
       - V-220640
 
-- name: "MEDIUM | CISC-L2-000210 | AUDIT | The Cisco switch must have all disabled switch ports assigned to an unused VLAN."
+- name: "MEDIUM | CISC-L2-000210 | PATCH | The Cisco switch must have all disabled switch ports assigned to an unused VLAN."
   block:
       - name: "MEDIUM | CISC-L2-000210 | PATCH | The Cisco switch must have all disabled switch ports assigned to an unused VLAN. | Create Blackhole VLAN And Name It."
         ios_vlans:
@@ -388,7 +388,7 @@
       - SV-220643r539671_rule
       - V-220643
 
-- name: "MEDIUM | CISC-L2-000240 | AUDIT | The Cisco switch must not use the default VLAN for management traffic."
+- name: "MEDIUM | CISC-L2-000240 | PATCH | The Cisco switch must not use the default VLAN for management traffic."
   block:
       - name: "MEDIUM | CISC-L2-000240 | PATCH | The Cisco switch must not use the default VLAN for management traffic. | Set New Management VLAN."
         ios_config:
@@ -407,7 +407,7 @@
       - SV-220644r539671_rule
       - V-220644
 
-- name: "MEDIUM | CISC-L2-000250 | AUDIT | The Cisco switch must have all user-facing or untrusted ports configured as access switch ports."
+- name: "MEDIUM | CISC-L2-000250 | PATCH | The Cisco switch must have all user-facing or untrusted ports configured as access switch ports."
   block:
       - name: "MEDIUM | CISC-L2-000250 | PATCH | The Cisco switch must have all user-facing or untrusted ports configured as access switch ports. | Set Userfacing."
         ios_config:
@@ -424,7 +424,7 @@
       - SV-220645r539671_rule
       - V-220645
 
-- name: "MEDIUM | CISC-L2-000260 | AUDIT | The Cisco switch must have the native VLAN assigned to an ID other than the default VLAN for all 802.1q trunk links."
+- name: "MEDIUM | CISC-L2-000260 | PATCH | The Cisco switch must have the native VLAN assigned to an ID other than the default VLAN for all 802.1q trunk links."
   block:
       - name: "MEDIUM | CISC-L2-000260 | PATCH | The Cisco switch must have the native VLAN assigned to an ID other than the default VLAN for all 802.1q trunk links. | Setup New Native Vlan & Name."
         ios_config:
