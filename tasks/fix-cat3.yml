@@ -1,6 +1,6 @@
 ---
 - name: "LOW | CISC-L2-000090 | PATCH | The Cisco switch must have Root Guard enabled on all switch ports connecting to access layer switches."
-  cisco.ios.ios_config:  
+  ios_config:  
       lines:
           - interface range {{ iosstig_rootguard_access_ports }}
           - spanning-tree guard root   
@@ -15,7 +15,7 @@
       - V-220629
 
 - name: "LOW | CISC-L2-000160 | PATCH | The Cisco switch must have Storm Control configured on all host-facing switchports."
-  cisco.ios.ios_config:  
+  ios_config:  
       lines:
           - interface range {{ iosstig_userfacing_ports }}
           - storm-control unicast {{ iosstig_unicast_bps_value }}
@@ -32,26 +32,26 @@
 
 - name: "LOW | CISC-L2-000170 | AUDIT | The Cisco switch must have IGMP or MLD Snooping configured on all VLANs."
   block:
-      - name: "LOW | CISC-L2-000170 | PATCH | The Cisco switch must have IGMP or MLD Snooping configured on all VLANs. | Get Snooping Status Global"
-        cisco.ios.ios_command:
+      - name: "LOW | CISC-L2-000170 | AUDIT | The Cisco switch must have IGMP or MLD Snooping configured on all VLANs. | Get Snooping Status Global"
+        ios_command:
           commands:
             - show run | include no ip igmp    
         register: cisc_l2_000170_igmp_status
       
       - name: "LOW | CISC-L2-000170 | PATCH | The Cisco switch must have IGMP or MLD Snooping configured on all VLANs. | Enable IGMP"
-        cisco.ios.ios_config:
+        ios_config:
             lines:
                 - ip igmp snooping
         when: "'no ip igmp snooping' in cisc_l2_000170_igmp_status.stdout"
 
-      - name: "LOW | CISC-L2-000170 | PATCH | The Cisco switch must have IGMP or MLD Snooping configured on all VLANs. | Get Snooping Status VLAN"
-        cisco.ios.ios_command:
+      - name: "LOW | CISC-L2-000170 | AUDIT | The Cisco switch must have IGMP or MLD Snooping configured on all VLANs. | Get Snooping Status VLAN"
+        ios_command:
           commands:
             - show run | include no ip igmp    
         register: cisc_l2_000170_igmp_status
           
       - name: "LOW | CISC-L2-000170 | PATCH | The Cisco switch must have IGMP or MLD Snooping configured on all VLANs. | Enable IGMP VLAN"
-        cisco.ios.ios_config:
+        ios_config:
             commands: 
                 - ip igmp snooping vlan {{ item }}
         with_items:
@@ -67,15 +67,15 @@
       - SV-220637r539671_rule
       - V-220637
 
-- name: "LOW | CISC-L2-000270 | PATCH | The Cisco switch must not have any switchports assigned to the native VLAN."
+- name: "LOW | CISC-L2-000270 | AUDIT | The Cisco switch must not have any switchports assigned to the native VLAN."
   block:
-      - name: "LOW | CISC-L2-000270 | PATCH | The Cisco switch must not have any switchports assigned to the native VLAN. | Get Native Vlan"
-        cisco.ios.ios_command:
+      - name: "LOW | CISC-L2-000270 | AUDIT | The Cisco switch must not have any switchports assigned to the native VLAN. | Get Native Vlan"
+        ios_command:
           commands:
             - show interfaces trunk
         register: cisc_l2_000270_trunkinfo
         
-      - name: "LOW | CISC-L2-000270 | PATCH | The Cisco switch must not have any switchports assigned to the native VLAN. | Message Out"
+      - name: "LOW | CISC-L2-000270 | AUDIT | The Cisco switch must not have any switchports assigned to the native VLAN. | Message Out"
         debug:
           msg:
               - "Warning! Below are the ports that are on the native VLAN"

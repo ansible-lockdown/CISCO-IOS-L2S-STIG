@@ -1,6 +1,6 @@
 ---
 - name: "HIGH | CISC-L2-000020 | PATCH | The Cisco switch must uniquely identify all network-connected endpoint devices before establishing any connection."
-  cisco.ios.ios_config:
+  ios_config:
       lines:
         - radius server {{ iosstig_radius_server_one_name }}
         - address ipv4 {{ iosstig_radius_server_one_ip }}

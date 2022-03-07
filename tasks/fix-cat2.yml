@@ -1,6 +1,6 @@
 ---
 - name: "MEDIUM | CISC-L2-000010 | PATCH | The Cisco switch must be configured to disable non-essential capabilities."
-  cisco.ios.ios_config:
+  ios_config:
       lines: no {{ item }}
   with_items:
       - "{{ iosstig_non_essential_serv }}"
@@ -17,20 +17,20 @@
 - name: "MEDIUM | CISC-L2-000030 | PATCH | The Cisco switch must authenticate all VLAN Trunk Protocol (VTP) messages with a hash function using the most secured cryptographic algorithm available."
   block:
       - name: "MEDIUM | CISC-L2-000030 | AUDIT | The Cisco switch must authenticate all VLAN Trunk Protocol (VTP) messages with a hash function using the most secured cryptographic algorithm available. | Get VTP Mode"
-        cisco.ios.ios_command:
+        ios_command:
             commands: 
               - Show vtp status | include VTP Operating Mode
         register: cisc_l2_000030_vtp_mode
 
       - name: "MEDIUM | CISC-L2-000030 | AUDIT | The Cisco switch must authenticate all VLAN Trunk Protocol (VTP) messages with a hash function using the most secured cryptographic algorithm available. | Check operating mode is not off"
-        cisco.ios.ios_command:
+        ios_command:
             commands: 
                 - show vtp password
         register: cisc_l2_000030_vtppassword
         when: '"VTP Operating Mode                : Off" not in cisc_l2_000030_vtp_mode.stdout'
 
       - name: MEDIUM | CISC-L2-000030 | PATCH | The Cisco switch must authenticate all VLAN Trunk Protocol (VTP) messages with a hash function using the most secured cryptographic algorithm available. | Set password"
-        cisco.ios.ios_command:  
+        ios_command:  
             commands:
                 - vtp password {{ iosstig_vtp_user_password }} 
         changed_when: true
@@ -46,7 +46,7 @@
       - V-220624
 
 - name: "MEDIUM | CISC-L2-000040 | PATCH | The Cisco switch must manage excess bandwidth to limit the effects of packet-flooding types of denial-of-service (DoS) attacks."
-  cisco.ios.ios_config:
+  ios_config:
       lines: 
           - mls qos
   when:
@@ -59,10 +59,10 @@
       - SV-220625r539671_rule
       - V-220625
 
-- name: "MEDIUM | CISC-L2-000060 | PATCH | The Cisco switch must be configured for authorized users to select a user session to capture."
+- name: "MEDIUM | CISC-L2-000060 | AUDIT | The Cisco switch must be configured for authorized users to select a user session to capture."
   block:
       - name: "MEDIUM | CISC-L2-000060 | PATCH | The Cisco switch must be configured for authorized users to select a user session to capture. | Set Source Interfaces"
-        cisco.ios.ios_config:
+        ios_config:
             lines: 
               - monitor session {{ item }}
         with_items:
@@ -70,7 +70,7 @@
         when: "'none' not in iosstig_capture_session_source"
 
       - name: "MEDIUM | CISC-L2-000060 | PATCH | The Cisco switch must be configured for authorized users to select a user session to capture. | Set Destination Interfaces"
-        cisco.ios.ios_config:
+        ios_config:
             lines:
               - monitor session {{ item }}
         with_items:
@@ -86,10 +86,10 @@
       - SV-220626r539671_rule
       - V-220626
 
-- name: "MEDIUM | CISC-L2-000070 | PATCH | The Cisco switch must be configured for authorized users to remotely view, in real time, all content related to an established user session from a component separate from the Cisco switch."
+- name: "MEDIUM | CISC-L2-000070 | AUDIT | The Cisco switch must be configured for authorized users to remotely view, in real time, all content related to an established user session from a component separate from the Cisco switch."
   block:
       - name: "MEDIUM | CISC-L2-000070 | PATCH | The Cisco switch must be configured for authorized users to remotely view, in real time, all content related to an established user session from a component separate from the Cisco switch. | Set Source Interfaces"
-        cisco.ios.ios_config:
+        ios_config:
             lines: 
               - monitor session {{ item }}
         with_items:
@@ -97,7 +97,7 @@
         when: "'none' not in iosstig_remoteview_session_source"
 
       - name: "MEDIUM | CISC-L2-000070 | PATCH | The Cisco switch must be configured for authorized users to remotely view, in real time, all content related to an established user session from a component separate from the Cisco switch. | Set Destination Interfaces"
-        cisco.ios.ios_config:
+        ios_config:
             lines:
               - monitor session {{ item }}
         with_items:
@@ -114,7 +114,7 @@
       - V-220627
 
 - name: "MEDIUM | CISC-L2-000080 | PATCH | The Cisco switch must authenticate all endpoint devices before establishing any connection."
-  cisco.ios.ios_config:
+  ios_config:
       lines:
         - radius server {{ iosstig_radius_server_one_name }}
         - address ipv4 {{ iosstig_radius_server_one_ip }}
@@ -143,16 +143,16 @@
       - SV-220628r539671_rule
       - V-220628
 
-- name: "MEDIUM | CISC-L2-000100 | PATCH |  The Cisco switch must have Bridge Protocol Data Unit (BPDU) Guard enabled on all user-facing or untrusted access switch ports."
+- name: "MEDIUM | CISC-L2-000100 | AUDIT |  The Cisco switch must have Bridge Protocol Data Unit (BPDU) Guard enabled on all user-facing or untrusted access switch ports."
   block:
       - name: "MEDIUM | CISC-L2-000100 | PATCH |  The Cisco switch must have Bridge Protocol Data Unit (BPDU) Guard enabled on all user-facing or untrusted access switch ports. | Global BPDU Guard."
-        cisco.ios.ios_config:
+        ios_config:
             lines: 
               - spanning-tree portfast bpduguard default
         when: "'none' not in iosstig_bpdu_guard_global"
 
       - name: "MEDIUM | CISC-L2-000100 | PATCH |  The Cisco switch must have Bridge Protocol Data Unit (BPDU) Guard enabled on all user-facing or untrusted access switch ports. | Per Interface BPDU Guard."
-        cisco.ios.ios_config:
+        ios_config:
             lines:
               - interface range {{ iosstig_bpdu_guard_interfaces }} 
               - spanning-tree bpduguard enable
@@ -168,7 +168,7 @@
       - V-220630
 
 - name: "MEDIUM | CISC-L2-000110 | PATCH | The Cisco switch must have Spanning Tree Protocol (STP) Loop Guard enabled."
-  cisco.ios.ios_config:
+  ios_config:
       lines: 
         - spanning-tree loopguard default
   when:
@@ -182,7 +182,7 @@
       - V-220631
   
 - name: "MEDIUM | CISC-L2-000120 | PATCH | The Cisco switch must have Unknown Unicast Flood Blocking (UUFB) enabled."
-  cisco.ios.ios_config:
+  ios_config:
       lines:
         - interface range {{ item }} 
         - switchport block unicast
@@ -201,7 +201,7 @@
       - V-220632
 
 - name: "MEDIUM | CISC-L2-000130 | PATCH | The Cisco switch must have DHCP snooping for all user VLANs to validate DHCP messages from untrusted sources."
-  cisco.ios.ios_config:
+  ios_config:
         lines: 
           - ip dhcp snooping vlan {{ iosstig_user_vlans }}
   when:
@@ -215,7 +215,7 @@
       - V-220633
 
 - name: "MEDIUM | CISC-L2-000140 | PATCH | The Cisco switch must have IP Source Guard enabled on all user-facing or untrusted access switch ports."
-  cisco.ios.ios_config:
+  ios_config:
       lines:
           - interface range {{ iosstig_sourceguard_option }}
           - ip verify source
@@ -230,7 +230,7 @@
       - V-220634
 
 - name: "MEDIUM | CISC-L2-000150 | PATCH | The Cisco switch must have Dynamic Address Resolution Protocol (ARP) Inspection (DAI) enabled on all user VLANs."
-  cisco.ios.ios_config:
+  ios_config:
         lines: 
           - ip arp inspection vlan {{ iosstig_user_vlans }}
   when:
@@ -243,26 +243,26 @@
       - SV-220635r539671_rule
       - V-220635
 
-- name: "MEDIUM | CISC-L2-000180 | PATCH | The Cisco switch must implement Rapid Spanning Tree Protocol (STP) where VLANs span multiple switches with redundant links."
+- name: "MEDIUM | CISC-L2-000180 | AUDIT | The Cisco switch must implement Rapid Spanning Tree Protocol (STP) where VLANs span multiple switches with redundant links."
   block:
       - name: "MEDIUM | CISC-L2-000180 | PATCH | The Cisco switch must implement Rapid Spanning Tree Protocol (STP) where VLANs span multiple switches with redundant links. | Set Spanning Tree Mode."
-        cisco.ios.ios_config:
+        ios_config:
             lines: 
               - spanning-tree mode {{ iosstig_spanningtree_mode }}
 
-      - name: "MEDIUM | CISC-L2-000180 | PATCH | The Cisco switch must implement Rapid Spanning Tree Protocol (STP) where VLANs span multiple switches with redundant links. | Wait For Change."
+      - name: "MEDIUM | CISC-L2-000180 | AUDIT | The Cisco switch must implement Rapid Spanning Tree Protocol (STP) where VLANs span multiple switches with redundant links. | Wait For Change."
         wait_for_connection:
           delay: 35
           timeout: 40
 
       - name: "MEDIUM | CISC-L2-000180 | PATCH | The Cisco switch must implement Rapid Spanning Tree Protocol (STP) where VLANs span multiple switches with redundant links. Prune VLAN's From Spanning-Tree."
-        cisco.ios.ios_config:
+        ios_config:
             lines: 
               - no spanning-tree vlan {{ iosstig_spanningtree_remove_vlans }}
         when: "'none' not in iosstig_spanningtree_remove_vlans"
 
       - name: "MEDIUM | CISC-L2-000180 | PATCH | The Cisco switch must implement Rapid Spanning Tree Protocol (STP) where VLANs span multiple switches with redundant links. | Add VLAN's Back Into Spanning-Tree."
-        cisco.ios.ios_config:
+        ios_config:
             lines: 
               - spanning-tree vlan {{ iosstig_spanningtree_add_vlans }}
         when: "'none' not in iosstig_spanningtree_add_vlans"  
@@ -276,16 +276,16 @@
       - SV-220638r539671_rule
       - V-220638
 
-- name: "MEDIUM | CISC-L2-000190 | PATCH | The Cisco switch must enable Unidirectional Link Detection (UDLD) to protect against one-way connections."
+- name: "MEDIUM | CISC-L2-000190 | AUDIT | The Cisco switch must enable Unidirectional Link Detection (UDLD) to protect against one-way connections."
   block:
       - name: "MEDIUM | CISC-L2-000190 | PATCH | The Cisco switch must enable Unidirectional Link Detection (UDLD) to protect against one-way connections. | Global UDLD Enable"
-        cisco.ios.ios_config:
+        ios_config:
             lines: 
               - udld enable
         when: "'none' not in iosstig_udld_global"
 
       - name: "MEDIUM | CISC-L2-000190 | PATCH | The Cisco switch must enable Unidirectional Link Detection (UDLD) to protect against one-way connections. | Interface UDLD Enable"
-        cisco.ios.ios_config:
+        ios_config:
             lines:
               - interface range {{ iosstig_udld_interface }} 
               - udld port
@@ -301,7 +301,7 @@
       - V-220639
 
 - name: "MEDIUM | CISC-L2-000200 | PATCH | The Cisco switch must have all trunk links enabled statically."
-  cisco.ios.ios_config:
+  ios_config:
       lines:
         - interface range {{ iosstig_trunk_ports }}
         - switchport trunk encapsulation dot1q
@@ -317,10 +317,10 @@
       - SV-220640r539671_rule
       - V-220640
 
-- name: "MEDIUM | CISC-L2-000210 | PATCH | The Cisco switch must have all disabled switch ports assigned to an unused VLAN."
+- name: "MEDIUM | CISC-L2-000210 | AUDIT | The Cisco switch must have all disabled switch ports assigned to an unused VLAN."
   block:
       - name: "MEDIUM | CISC-L2-000210 | PATCH | The Cisco switch must have all disabled switch ports assigned to an unused VLAN. | Create Blackhole VLAN And Name It."
-        cisco.ios.ios_vlans:
+        ios_vlans:
             config: 
                 - vlan_id: "{{ iosstig_blackhole_vlan }}"
                   name: "{{ iosstig_blackhole_vlan_name }}"
@@ -328,14 +328,14 @@
             state: merged  
 
       - name: "MEDIUM | CISC-L2-000210 | PATCH | The Cisco switch must have all disabled switch ports assigned to an unused VLAN. | Assign Inactive Ports To VLAN and Shutdown."
-        cisco.ios.ios_config:
+        ios_config:
             lines: 
                 - interface range {{ iosstig_blackhole_ports }}
                 - switchport access vlan {{ iosstig_blackhole_vlan }}
                 - shutdown
 
       - name: "MEDIUM | CISC-L2-000210 | PATCH | The Cisco switch must have all disabled switch ports assigned to an unused VLAN. | Remove Blackhole VLAN From Trunk Ports."
-        cisco.ios.ios_config:
+        ios_config:
             lines: 
               - interface range {{ iosstig_trunk_ports }}
               - switchport trunk allowed vlan except {{ iosstig_blackhole_vlan }} 
@@ -349,10 +349,10 @@
       - SV-220641r539671_rule
       - V-220641
 
-- name: "MEDIUM | CISC-L2-000220 | PATCH | The Cisco switch must not have the default VLAN assigned to any host-facing switch ports."
+- name: "MEDIUM | CISC-L2-000220 | AUDIT | The Cisco switch must not have the default VLAN assigned to any host-facing switch ports."
   block:
       - name: "MEDIUM | CISC-L2-000220 | AUDIT | The Cisco switch must not have the default VLAN assigned to any host-facing switch ports. | Get VLAN Status."
-        cisco.ios.ios_command:
+        ios_command:
           commands:
             - show vlan
         register: cisc_l2_000270_vlaninfo
@@ -374,7 +374,7 @@
       - V-220642
 
 - name: "MEDIUM | CISC-L2-000230 | PATCH | The Cisco switch must have the default VLAN pruned from all trunk ports that do not require it."
-  cisco.ios.ios_config:
+  ios_config:
             lines:
               - interface range {{ iosstig_trunk_ports }}
               - switchport trunk allowed vlan except 1,{{ iosstig_blackhole_vlan }}
@@ -388,10 +388,10 @@
       - SV-220643r539671_rule
       - V-220643
 
-- name: "MEDIUM | CISC-L2-000240 | PATCH | The Cisco switch must not use the default VLAN for management traffic."
+- name: "MEDIUM | CISC-L2-000240 | AUDIT | The Cisco switch must not use the default VLAN for management traffic."
   block:
       - name: "MEDIUM | CISC-L2-000240 | PATCH | The Cisco switch must not use the default VLAN for management traffic. | Set New Management VLAN."
-        cisco.ios.ios_config:
+        ios_config:
             lines: 
               - interface vlan {{ iosstig_mgmt_vlan }}
               - description {{ iosstig_mgmt_vlan_name }}
@@ -407,10 +407,10 @@
       - SV-220644r539671_rule
       - V-220644
 
-- name: "MEDIUM | CISC-L2-000250 | PATCH | The Cisco switch must have all user-facing or untrusted ports configured as access switch ports."
+- name: "MEDIUM | CISC-L2-000250 | AUDIT | The Cisco switch must have all user-facing or untrusted ports configured as access switch ports."
   block:
       - name: "MEDIUM | CISC-L2-000250 | PATCH | The Cisco switch must have all user-facing or untrusted ports configured as access switch ports. | Set Userfacing."
-        cisco.ios.ios_config:
+        ios_config:
             lines:
               - interface range {{ iosstig_setaccess_switchports }}
               - switchport mode access
@@ -427,12 +427,12 @@
 - name: "MEDIUM | CISC-L2-000260 | AUDIT | The Cisco switch must have the native VLAN assigned to an ID other than the default VLAN for all 802.1q trunk links."
   block:
       - name: "MEDIUM | CISC-L2-000260 | PATCH | The Cisco switch must have the native VLAN assigned to an ID other than the default VLAN for all 802.1q trunk links. | Setup New Native Vlan & Name."
-        cisco.ios.ios_config:
+        ios_config:
             lines: 
                 - vlan {{ iosstig_native_vlan }}
                 - name {{ iosstig_native_vlan_name }}
       - name: "MEDIUM | CISC-L2-000260 | PATCH | The Cisco switch must have the native VLAN assigned to an ID other than the default VLAN for all 802.1q trunk links. | Apply New Native VLAN To Trunk Ports."
-        cisco.ios.ios_config:
+        ios_config:
             lines: 
                 - interface range {{ iosstig_trunklink_interfaces_native }}
                 - switchport trunk native vlan {{ iosstig_native_vlan }}
