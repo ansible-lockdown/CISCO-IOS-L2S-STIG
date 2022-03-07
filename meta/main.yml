@@ -1,18 +1,18 @@
 ---
 galaxy_info:
-    author: "Sam Doran, Josh Springer, Daniel Shepherd, Bas Meijeri, James Cassell, Mike Renfro, DFed, George Nalen, Mark Bolwell"
-    description: "Apply the DISA RHEL 8 CIS"
+    author: "Stephen Williams, DFed, George Nalen, Mark Bolwell"
+    description: "Apply the DISA Cisco L2 Switch STIG"
     company: "MindPoint Group"
     license: MIT
-    role_name: rhel8_cis
+    role_name: cisco_ios_l2s_stig
     min_ansible_version: 2.9.0
     platforms:
-        - name: EL
-          versions:
-              - 8
+        - name: IOS
     galaxy_tags:
         - system
         - security
-        - cis
+        - stig
         - hardening
+collections:
+  - cisco.ios (same as collections requireemtas yaml)
 dependencies: []

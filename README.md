@@ -1,8 +1,6 @@
 CISCO IOS L2S STIG
 ================
 
-![Build Status](https://img.shields.io/github/workflow/status/ansible-lockdown/RHEL8-STIG/CommunityToDevel?label=Devel%20Build%20Status&style=plastic)
-![Build Status](https://img.shields.io/github/workflow/status/ansible-lockdown/RHEL8-STIG/DevelToMain?label=Main%20Build%20Status&style=plastic)
 ![Release](https://img.shields.io/github/v/release/ansible-lockdown/RHEL8-STIG?style=plastic)
 
 Configure a Cisco IOS L2 Switch to be DISA STIG compliant. All findings will be audited by default. Non-disruptive CAT I, CAT II, and CAT III findings will be corrected by default. Disruptive finding remediation can be enabled by setting `iosl2sstig_disruption_high` to `yes`.
@@ -19,9 +17,6 @@ This contains rewrites and ID reference changes as per STIG documentation.
 
 Requirements
 ------------
-
-RHEL 8 or CentOS 8 - Other versions are not supported.
-Access to download or add the goss binary and content to the system if using auditing. options are available on how to get the content to the system.
 
 **General:**
 
@@ -50,8 +45,6 @@ Dependencies
 The following packages must be installed on the controlling host/host where ansible is executed:
 
 - python2-passlib (or just passlib, if using python3)
-- python-lxml
-- python-xmltodict
 - python-jmespath
 
 Package 'python-xmltodict' is required if you enable the OpenSCAP tool installation and run a report. Packages python(2)-passlib and python-jmespath are required for tasks with custom filters or modules. These are all required on the controller host that executes Ansible.
