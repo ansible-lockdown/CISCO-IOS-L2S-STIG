@@ -7,6 +7,10 @@ Configure a Cisco IOS L2 Switch to be DISA STIG compliant. All findings will be 
 
 This role is based on Cisco IOS L2S DISA STIG: [Version 2, Release: 2 Released On Jul 23 2021](https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Cisco_IOS_Switch_Y21M07_STIG.zip).
 
+## Join us
+
+On our [Discord Server](https://discord.gg/JFxpSgPFEJ) to ask questions, discuss features, or just chat with other Ansible-Lockdown users
+
 Updating
 --------
 
@@ -59,8 +63,7 @@ Tags
 
 There are many tags available for added control precision. Each control has it's own set of tags noting the control number as well as what parts of the system that control addresses.
 
-Below is an example of the tag section from a control within this role. Using this example if you set your run to skip all controls with the tag ssh, this task will be skipped. The
-opposite can also happen where you run only controls tagged with ssh.
+Below is an example of the tag section from a control within this role. Using this example if you set your run to skip all controls with the tag ssh, this task will be skipped. The opposite can also happen where you run only controls tagged with ssh.
 
 ```sh
 tags:
