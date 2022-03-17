@@ -1,0 +1,100 @@
+---
+- name: "LOW | CISC-L2-000090 | PATCH | The Cisco switch must have Root Guard enabled on all switch ports connecting to access layer switches."
+  ios_config:  
+      lines:
+          - interface range {{ iosstig_rootguard_access_ports }}
+          - spanning-tree guard root   
+  when:
+      - cisc_l2_000090
+  tags:
+      - CISC-L2-000090
+      - CAT3
+      - CCI-002385
+      - SRG-NET-000362-L2S-000021
+      - SV-220629r744223_rule
+      - V-220629
+
+- name: "LOW | CISC-L2-000160 | PATCH | The Cisco switch must have Storm Control configured on all host-facing switchports."
+  ios_config:  
+      lines:
+          - interface range {{ iosstig_userfacing_ports }}
+          - storm-control unicast {{ iosstig_unicast_bps_value }}
+          - storm-control broadcast {{ iosstig_broadcast_bps_value }}
+  when:
+      - cisc_l2_000160
+  tags:
+      - CISC-L2-000160
+      - CAT3
+      - CCI-000366
+      - SRG-NET-000512-L2S-000001
+      - SV-220636r648763_rule
+      - V-220636
+
+- name: "LOW | CISC-L2-000170 | PATCH | The Cisco switch must have IGMP or MLD Snooping configured on all VLANs."
+  block:
+      - name: "LOW | CISC-L2-000170 | AUDIT | The Cisco switch must have IGMP or MLD Snooping configured on all VLANs. | Get Snooping Status Global"
+        ios_command:
+          commands:
+            - show run | include no ip igmp    
+        register: cisc_l2_000170_igmp_status
+      
+      - name: "LOW | CISC-L2-000170 | PATCH | The Cisco switch must have IGMP or MLD Snooping configured on all VLANs. | Enable IGMP"
+        ios_config:
+            lines:
+                - ip igmp snooping
+        when: "'no ip igmp snooping' in cisc_l2_000170_igmp_status.stdout"
+
+      - name: "LOW | CISC-L2-000170 | AUDIT | The Cisco switch must have IGMP or MLD Snooping configured on all VLANs. | Get Snooping Status VLAN"
+        ios_command:
+          commands:
+            - show run | include no ip igmp    
+        register: cisc_l2_000170_igmp_status
+          
+      - name: "LOW | CISC-L2-000170 | PATCH | The Cisco switch must have IGMP or MLD Snooping configured on all VLANs. | Enable IGMP VLAN"
+        ios_config:
+            commands: 
+                - ip igmp snooping vlan {{ item }}
+        with_items:
+            - "{{ cisc_l2_000170_igmp_status.stdout | regex_findall('[0-9]+') | list }}"
+        when: cisc_l2_000170_igmp_status.stdout | length > 0
+  when:
+      - cisc_l2_000170
+  tags:
+      - CISC-L2-000170
+      - CAT3
+      - CCI-000366
+      - SRG-NET-000512-L2S-000002
+      - SV-220637r539671_rule
+      - V-220637
+
+- name: "LOW | CISC-L2-000270 | AUDIT | The Cisco switch must not have any switchports assigned to the native VLAN."
+  block:
+      - name: "LOW | CISC-L2-000270 | AUDIT | The Cisco switch must not have any switchports assigned to the native VLAN. | Get Native Vlan"
+        ios_command:
+          commands:
+            - show interfaces trunk
+        register: cisc_l2_000270_trunkinfo
+        
+      - name: "LOW | CISC-L2-000270 | AUDIT | The Cisco switch must not have any switchports assigned to the native VLAN. | Message Out"
+        debug:
+          msg:
+              - "Warning! Below are the ports that are on the native VLAN"
+              - "To conform to STIG standards make sure these are not access switch ports"
+              - "{{ cisc_l2_000270_trunkinfo.stdout_lines }}"
+  when:
+      - cisc_l2_000270
+  tags:
+      - CISC-L2-000270
+      - CAT3s
+      - CCI-000366
+      - SRG-NET-000512-L2S-000013
+      - SV-220647r539671_rule
+      - V-220647
+
+
+
+
+
+
+
+

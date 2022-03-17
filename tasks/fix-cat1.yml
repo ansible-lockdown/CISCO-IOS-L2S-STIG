@@ -1,0 +1,30 @@
+---
+- name: "HIGH | CISC-L2-000020 | PATCH | The Cisco switch must uniquely identify all network-connected endpoint devices before establishing any connection."
+  ios_config:
+      lines:
+        - radius server {{ iosstig_radius_server_one_name }}
+        - address ipv4 {{ iosstig_radius_server_one_ip }}
+        - key {{ iosstig_radius_server_one_key }}
+        - radius server {{ iosstig_radius_server_two_name }}
+        - address ipv4 {{ iosstig_radius_server_two_ip }}
+        - key {{ iosstig_radius_server_two_key }}
+        - aaa new-model
+        - aaa group server radius {{ iosstig_radius_group_name }}
+        - server name {{ iosstig_radius_server_one_name }}
+        - server name {{ iosstig_radius_server_two_name }}
+        - aaa authentication dot1x default group {{ iosstig_radius_group_name }}
+        - dot1x system-auth-control
+        - interface range {{ iosstig_userfacing_ports }}
+        - switchport mode access
+        - authentication host-mode {{ iosstig_auth_hostmode }}
+        - dot1x pae authenticator
+        - authentication port-control auto
+  when:
+      - cisc_l2_000020
+  tags:
+      - CISC-L2-000020
+      - CAT1
+      - CCI-000778
+      - SRG-NET-000148-L2S-000015
+      - SV-220623r539671_rule
+      - V-220623

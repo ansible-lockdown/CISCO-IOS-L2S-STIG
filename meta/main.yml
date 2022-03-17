@@ -1,0 +1,18 @@
+---
+galaxy_info:
+    author: "Stephen Williams, DFed, George Nalen, Mark Bolwell"
+    description: "Apply the DISA Cisco L2 Switch STIG"
+    company: "MindPoint Group"
+    license: MIT
+    role_name: cisco_ios_l2s_stig
+    min_ansible_version: 2.9.0
+    platforms:
+        - name: IOS
+    galaxy_tags:
+        - system
+        - security
+        - stig
+        - hardening
+collections:
+  - cisco.ios
+dependencies: []

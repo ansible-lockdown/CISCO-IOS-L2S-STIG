@@ -1,0 +1,322 @@
+---
+iosl2sstig_cat1_patch: false
+iosl2sstig_cat2_patch: true
+iosl2sstig_cat3_patch: false
+
+# We've defined complexity-high to mean that we cannot automatically remediate
+# the rule in question.  In the future this might mean that the remediation
+# may fail in some cases.
+iosl2sstig_complexity_high: false
+
+# We've defined disruption-high to indicate items that are likely to cause
+# disruption in a normal workflow.  These items can be remediated automatically
+# but are disabled by default to avoid disruption.
+iosl2sstig_disruption_high: true
+
+# Whether to skip the reboot
+iosl2sstig_skip_reboot: true
+
+# Defined will change if control requires
+change_requires_reboot: false
+
+# These variables correspond with the STIG IDs defined in the STIG and allows you to enable/disable specific rules.
+# PLEASE NOTE: These work in coordination with the cat1, cat2, cat3 group variables. You must enable an entire group
+# in order for the variables below to take effect.
+
+# CAT 1 rules
+cisc_l2_000020: false
+
+# CAT 2 rules
+cisc_l2_000010: false
+cisc_l2_000030: false
+cisc_l2_000040: false
+cisc_l2_000060: false
+cisc_l2_000070: false
+cisc_l2_000080: false
+cisc_l2_000100: false
+cisc_l2_000110: false
+cisc_l2_000120: false
+cisc_l2_000130: false
+cisc_l2_000140: false
+cisc_l2_000150: false
+cisc_l2_000180: false
+cisc_l2_000190: false
+cisc_l2_000200: false
+cisc_l2_000210: false
+cisc_l2_000220: false
+cisc_l2_000230: false
+cisc_l2_000240: false
+cisc_l2_000250: false
+cisc_l2_000260: true
+
+# CAT 3 rules
+cisc_l2_000090: false
+cisc_l2_000160: false
+cisc_l2_000170: false
+cisc_l2_000270: false
+
+
+
+# Global Variables
+# Here are some examples of the values expected in the range.
+# GigabitEthernet 1/0/8 <--- Port 8
+# GigabitEthernet 1/0/8-10 <--- Ports 8-10
+# GigabitEthernet 1/0/8-10,GigabitEthernet 1/0/13  <--- Ports 8-10 and 13
+# GigabitEthernet 1/0/8-10,GigabitEthernet 1/0/25-28,GigabitEthernet 1/0/16-20 <--- Ports 8-10, 25-28, and 16-20
+
+# iosstig_trunk_ports
+iosstig_trunk_ports: "GigabitEthernet 1/0/2"
+# iosstig_access_ports
+# These ports are used in control 90 to set Root Guard on all switch ports connecting to access layer switches.
+iosstig_rootguard_access_ports: "GigabitEthernet 1/0/3"
+# iosstig_userfacing_ports
+iosstig_userfacing_ports: "GigabitEthernet 1/0/4-10,GigabitEthernet 1/0/12-15"
+# iosstig_untrusted_ports
+iosstig_untrusted_ports: "GigabitEthernet 1/0/16-19,GigabitEthernet 1/0/11"
+# iosstig_blackhole_ports
+iosstig_blackhole_ports: "GigabitEthernet 1/0/20-23,GigabitEthernet 1/0/25-28"
+
+
+
+
+# Cat 1
+# CISC-L2-000020
+# CISC-L2-000080
+# Settings below set the RADIUS SERVER indivigual names, ip, and key. 
+iosstig_radius_server_one_name: "RADIUS_1"
+iosstig_radius_server_one_ip: "192.168.68.250"
+iosstig_radius_server_one_key: "key_here"
+iosstig_radius_server_two_name: "RADIUS_2"
+iosstig_radius_server_two_ip: "192.168.68.251"
+iosstig_radius_server_two_key: "key_here"
+#iosstig_radius_group_name is the group name for the Radius servers.
+iosstig_radius_group_name: "RADIUS_SERVERS"
+# iosstig_auth_hostmode is the setting for the host facing interfaces.
+# Note: Single-host is the default. Host-mode multi-domain (for VoIP phone plus PC) or 
+# multi-auth (multiple PCs connected to a hub) can be configured as alternatives.
+# Below Are All Valid Options
+#  multi-auth    Multiple Authentication Mode
+#  multi-domain  Multiple Domain Mode
+#  multi-host    Multiple Host Mode
+#  single-host   SINGLE HOST Mode
+iosstig_auth_hostmode: "single-host"
+
+
+
+
+# Cat 2
+# CISC-L2-000010
+# Not all Cisco switches support these features please make sure you add 
+# Review the switch configuration to verify that the switch does not have any unnecessary 
+# or non-secure services enabled. 
+# Note: ip http server can be enabled provided that the "ip http active-session-modules none" 
+# command is configured for scenarios such as ISE sending URL redirects to the switch.
+# For example, the following commands should not be in the configuration: 
+# - boot network
+# - ip boot server
+# - ip bootp server
+# - ip dns server
+# - ip identd
+# - ip finger
+# - ip http server
+# - ip rcmd rcp-enable
+# - ip rcmd rsh-enable
+# - service config
+# - service finger
+# - service tcp-small-servers
+# - service udp-small-servers
+# - service pad
+iosstig_non_essential_serv:
+    - ip finger
+    - ip http server
+    - ip rcmd rcp-enable
+    - ip rcmd rsh-enable
+    - service config
+    - service finger
+    - service tcp-small-servers
+    - service udp-small-servers
+    - service pad
+
+# CISC-L2-000030
+# iosstig_vtp_user_password is the password you will change for vtp password. 
+# CHANGE THE DEFAULT!!!!!!!!!!!!!!!
+# MAKE SURE TO VAULT PASSWORDS, PLAIN TEXT PASSWORDS ARE BAD.
+iosstig_vtp_user_password: changeme
+
+# CISC-L2-000060
+#####################################################################################
+#####################################################################################
+###### BE AWARE CISC-L2-000070 HAS SIMILAR CONTROLS MAKE SURE SESSION NUMBER   ######
+###### AND INTERFACES DO NOT OVERLAP ON THESE TWO CONTROLS. ONE CAN MONITOR    ######
+###### AND THE OTHER ALLOWS FOR REMOTE VIEW IN REAL TIME. BE AWARE CERTAIN     ######
+###### SWITCHES HAVE A LIMITED NUMBER OF SOURCE SESSIONS.  TESTING WAS DONE ON ######
+###### A SWITCH THAT ALLOWS FOR ONLY 2 SOURCE SESSIONS.                        ######
+#####################################################################################
+#####################################################################################
+# iosstig_capture_session_source & iosstig_capture_session_destination allow authorized 
+# user to capture a session for investigation purposes. The examples below are just the 
+# basics required to be stig compliant.
+# Please refer to the link below for additional variables that may be applied to the examples bwlow.
+# https://www.cisco.com/c/en/us/td/docs/routers/nfvis/switch_command/b-nfvis-switch-command-reference/monitor_commands.pdf
+# Below are examples of the configurations that can be applied.  
+# EXAMPLES 
+# NOTE: RANGES ARE NOT VALID HERE
+# none <--- when placed in iosstig_capture_session_source & iosstig_capture_session_destination this bypasses the configuration of source and destination session monitoring.
+# 1 source interface GigabitEthernet 1/0/13  
+# 1 source interface VLAN 100
+
+iosstig_capture_session_source:
+    - "1 source interface GigabitEthernet 1/0/3"
+iosstig_capture_session_destination:
+    - "1 destination interface GigabitEthernet 1/0/5"
+
+# CISC-L2-000070
+# iosstig_remoteview_session_source & iosstig_remoteview_session_destination allow authorized 
+# user to capture a session for investigation purposes. The examples below are just the 
+# basics required to be stig compliant.
+# Please refer to the link below for additional variables that may be applied to the examples bwlow.
+# https://www.cisco.com/c/en/us/td/docs/routers/nfvis/switch_command/b-nfvis-switch-command-reference/monitor_commands.pdf
+# Below are examples of the configurations that can be applied.  
+# NOTE: RANGES ARE NOT VALID HERE
+# none <--- when placed in iosstig_remoteview_session_source & iosstig_remoteview_session_destination this bypasses the configuration of source and destination session monitoring.
+# 1 source interface GigabitEthernet 1/0/13  <--- 1 denotes the session number then source and destination direct flow, 
+# followed by the interfaces it will be sent or gathered from.  You may setup more then just 1 session in the configuration below. 
+# NOTE: VLAN can be added here by using the following 
+# 1 source interface VLAN 100 
+iosstig_remoteview_session_source:
+    - "none"
+iosstig_remoteview_session_destination:
+    - "none"
+
+# CISC-L2-000100
+# iosstig_bpdu_guard_global allows you set BPDU Guard globally on a layer 2 switch.
+# none <--- This bypasses control. 
+# enable <--- This will set global BPDU Guard
+iosstig_bpdu_guard_global: "enable"
+# iosstig_bpdu_guard_interface allows the user to set BPDU Guard on specific ports on the switch
+# NOTE: Enable BPDU Guard on all user-facing or untrusted access switch ports as shown in the 
+# Configuration example below:
+# none <--- This bypasses control allowing you to set the global. 
+# iosstig_userfacing_ports <--- Sets it on userfacing ports defined in global variables at top.
+# iosstig_untrusted_ports <--- Sets it on untrusted ports defined in global variables at top.
+iosstig_bpdu_guard_interfaces: "none"
+
+# CISC-L2-000140
+# This will set the STIG to Configure the switch to have IP Source Guard enabled on 
+# all user-facing or untrusted access switch ports.  You will choose what configuration 
+# you want first then put the assigned variable in iosstig_sourceguard_option. 
+#### NOTE ONLY TWO OPTIONS BELOW ####
+# iosstig_userfacing_ports <--- Sets it on userfacing ports defined in global variables at top.
+# iosstig_untrusted_ports <--- Sets it on untrusted ports defined in global variables at top.
+iosstig_sourceguard_option: "{{ iosstig_userfacing_ports }}"
+
+# CISC-L2-000130
+# CISC-L2-000150
+# iosstig_user_vlans
+# iosstig_user_vlans is the list of vlans that are user facing.  
+# Per The STIG they are labled as user VLANs
+# Here are some examples of the values excpeted in the range
+# 50 <--- Single Vlan To Fix
+# 50,60  <--- Two Seperate Vlans To Fix
+# 50-60 <--- Vlans Range 50-60 To Fix
+# 2,10-15,50-60,75,300   <--- Vlans 2, 10-15, 50-60, 75, 300
+iosstig_user_vlans: "60,68-70,600,1000"
+
+# CISC-L2-000180
+# iosstig_spanningtree_mode is the mode to set for spanning tree for vlans across switches. 
+# The Cisco switch must implement Rapid Spanning Tree Protocol (STP) or
+# Multiple Spanning-Tree Protocol (MSTP). The latter scales much better 
+# when there are many VLANs that span multiple switches with redundant links.
+# Only two options are available are as follows to be stig compliant.
+# rapid-pvst <--- Rapid Spanning Tree Protocol Per VLAN
+# mst <--- Multiple Spanning-Tree Protocol
+iosstig_spanningtree_mode: "rapid-pvst"
+# In cases where VLANs do not span multiple switches, it is a best practice to 
+# not implement STP.  In this case you will put those VLANs in the iosstig_spanningtree_remove_vlans
+# If there are VLANs that are not in STP and they need to be readded add them to the 
+# iosstig_spanningtree_add_vlans variable.  If you have nothing to adjust then make sure yo have none in the variables.
+# Here are some examples of the values excpeted in the range.
+# none <--- This bypasses add/remove of VLANs.   
+# 50 <--- Single Vlan 
+# 50,60  <--- Two Seperate Vlans 
+# 50-60 <--- Vlans Range 50-60 
+# 2,10-15,50-60,75,300   <--- Vlans 2, 10-15, 50-60, 75, 300
+iosstig_spanningtree_remove_vlans: "none"
+iosstig_spanningtree_add_vlans: "none"
+
+# CISC-L2-000190
+# iosstig_udld_global allows you set UDLD globally on a layer 2 switch.
+# Note: An alternative implementation when UDLD is not supported by connected device is to deploy a 
+# single member Link Aggregation Group (LAG) via IEEE 802.3ad Link Aggregation Control Protocol (LACP).
+# none <--- This bypasses control. 
+# enable <--- This will set global UDLD
+iosstig_udld_global: "enable"
+# iosstig_udld_interface allows the user to set UDLD on specific ports on the switch
+# none <--- This bypasses control. 
+# Here are some examples of the values excpeted in the range.
+# GigabitEthernet 1/0/8 <--- Port 8
+# GigabitEthernet 1/0/8-10 <--- Ports 8-10
+# GigabitEthernet 1/0/8-10,GigabitEthernet 1/0/13  <--- Ports 8-10 and 13
+iosstig_udld_interface: "none"
+
+# CISC-L2-000210
+# iosstig_blackhole_vlan is a vlan that directs inactive ports to a vlan that is inactive.
+# A disabled port that is assigned to a user or management VLAN may become enabled by 
+# accident or by an attacker and as a result may gain access to that VLAN as a member.
+# iosstig_blackhole_vlan_name is the name assigned to the VLAN where you will be directing
+# inactive ports too.  The Blackhole interface ports are defined at top in global variables.
+iosstig_blackhole_vlan: "999"
+iosstig_blackhole_vlan_name: "BLACKHOLE"
+
+# CISC-L2-000220
+########## NEED TO DO ###########
+
+# CISC-L2-000240
+# iosstig_mgmt_vlan is the new management vlan that replaces vlan1 as the main vlan that Cisco 
+# used for switch management.  
+iosstig_mgmt_vlan: "22"
+# iosstig_mgmt_vlan_name is the name that will be assigned to the new management vlan. 
+iosstig_mgmt_vlan_name: "Management VLAN"
+# iosstig_mgmt_ipaddress is the management ip address. 
+iosstig_mgmt_ipaddress: "10.10.10.10"
+# iosstig_mgmt_ipaddress_subnet is the subnet for management ip address. 
+iosstig_mgmt_ipaddress_subnet: "255.255.255.0"
+
+# CISC-L2-000250
+# iosstig_setaccess_switchports sets mode access to either iosstig_userfacing_ports 
+# or iosstig_untrusted_ports. The Cisco switch must have all user-facing or untrusted
+# ports configured as access switch ports.
+#### NOTE ONLY TWO OPTIONS BELOW ####
+# iosstig_userfacing_ports <--- Sets it on userfacing ports defined in global variables at top.
+# iosstig_untrusted_ports <--- Sets it on untrusted ports defined in global variables at top.
+iosstig_setaccess_switchports: "{{ iosstig_userfacing_ports }}"
+
+# CISC-L2-000260
+# iosstig_native_vlan is the new native vlan for trunk links that you set in 
+# the global variabel setting.  The STIG states the Cisco switch must have the native VLAN 
+# assigned to an ID other than the default VLAN for all 802.1q trunk links.  
+# iosstig_native_vlan_name is the description of your native vlan for trunk links
+# for documentation purposes. 
+# NOTE: The native VLAN ID must be the same on both ends of the trunk link; otherwise, 
+# traffic could accidentally leak between broadcast domains.
+iosstig_native_vlan: "33"
+iosstig_native_vlan_name: "NATIVE"
+
+
+
+
+# CAT 3
+# CISC-L2-000160
+# iosstig_unicast_bps_value is the bps value
+# Older L2 switches require level as a step before setting bps. This var requires this level bps.
+# for example the value would be "level bps 62000000" for those older switches and
+# the value would be "bps 62000000" for new switches
+iosstig_unicast_bps_value: "level bps 62000000"
+# iosstig_unicast_bps_value is the bps value
+# Older L2 switches require level as a step before setting bps. This var requires this level bps.
+# for example the value would be "level bps 20000000" for those older switches and
+# the value would be "bps 20000000" for new switches
+iosstig_broadcast_bps_value: "level bps 20000000"
+
+
+
