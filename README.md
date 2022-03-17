@@ -1,7 +1,7 @@
 CISCO IOS L2S STIG
-================
+==================
 
-![Release](https://img.shields.io/github/v/release/ansible-lockdown/RHEL8-STIG?style=plastic)
+![Release](https://img.shields.io/github/v/release/ansible-lockdown/CISCO-IOS-L2S-STIG?style=plastic)
 
 Configure a Cisco IOS L2 Switch to be DISA STIG compliant. All findings will be audited by default. Non-disruptive CAT I, CAT II, and CAT III findings will be corrected by default. Disruptive finding remediation can be enabled by setting `iosl2sstig_disruption_high` to `yes`.
 

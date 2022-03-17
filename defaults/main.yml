@@ -1,7 +1,7 @@
 ---
 iosl2sstig_cat1_patch: false
 iosl2sstig_cat2_patch: true
-iosl2sstig_cat3_patch: true
+iosl2sstig_cat3_patch: false
 
 # We've defined complexity-high to mean that we cannot automatically remediate
 # the rule in question.  In the future this might mean that the remediation

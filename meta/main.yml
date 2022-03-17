@@ -14,5 +14,5 @@ galaxy_info:
         - stig
         - hardening
 collections:
-  - cisco.ios (same as collections requireemtas yaml)
+  - cisco.ios
 dependencies: []
